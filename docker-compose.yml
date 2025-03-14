@@ -6,5 +6,7 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
-      - /app/node_modules
+      - /app/node_modules  # Adicione isso para evitar sobrescrever
+    env_file:
+      - .env
     command: npm run start:dev

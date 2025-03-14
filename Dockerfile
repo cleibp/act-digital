@@ -4,14 +4,17 @@ FROM node:18-alpine
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copia o package.json e package-lock.json para instalar dependências
+# Copia apenas os arquivos essenciais para instalar dependências primeiro
 COPY package*.json ./
 
-# Instala as dependências
+# Instala as dependências antes de copiar o restante do código
 RUN npm install
 
-# Copia todo o código para dentro do contêiner
+# Copia o restante do projeto
 COPY . .
+
+# Copia o .env.sample para .env caso o .env não exista
+RUN test -f .env || cp .env.sample .env
 
 # Compila o código TypeScript
 RUN npm run build
